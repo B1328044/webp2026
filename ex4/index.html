@@ -1,23 +1,35 @@
-function tree(n){
-  printTreeTop(n);
-  printTreeBottom(n);
-}
-function printTreeTop(n){
-  for(let i = 1;i <= n ; i++){
-    let space = repeatchar( n - i , ' ');
-    let star = repeatchar( 2*i - 1 , '*');
-    console.log(space + star );
-  }
-}
-function printTreeBottom(n){
-  for(let j = 1 ; j < n ; j++){
-    let Bspace = repeatchar( n-1 , ' ');
-    console.log(Bspace + '*');
-  }
-}
-
-function repeatchar(n , arg_char){
-  return arg_char.repeat(n);
-}
-
-tree(4);
+<!DOCTYPE html>
+<html>
+<haed>
+    <meta charset="UTF-8">
+    <title>Chrismas Tree</title>
+</haed>
+<body>
+    <h2> 請打開 Console 看結果 </h2>
+    <script>
+        function tree(n){
+            printTreeTop(n);
+            printTreeBottom(n);
+        }
+        function printTreeTop(n){
+            for(let i = 1;i <= n ; i++){
+                let space = repeatchar( n - i , ' ');
+                let star = repeatchar( 2*i - 1 , '*');
+                console.log(space + star );
+            }
+        }
+        function printTreeBottom(n){
+            for(let j = 1 ; j < n ; j++){
+                let Bspace = repeatchar( n-1 , ' ');
+                console.log(Bspace + '*');
+            }
+        }
+        
+        function repeatchar(n , arg_char){
+            return arg_char.repeat(n);
+        }
+        
+        tree(4);
+    </script>
+</body>
+</html>
