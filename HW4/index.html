@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      th {
+        background-color: #04aa6d ;
+        color: white;
+      }
+    </style>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>景點觀光展覽資訊 <input type="text" id="input" /></h1>
+    <table id="csie" class="table table-striped table-hover">
+      <tr>
+        <th>名稱</th>
+        <th>地點</th>
+        <th>票價</th>
+      </tr>
+    </table>
+    <button id="prevBtn" type="button">上一頁</button>
+    <span id="page_num"></span>
+    <button id="nextBtn" type="button">下一頁</button>
+  </body>
+  <script>
+
+    var openUrl =
+      "https://cloud.culture.tw/frontsite/trans/SearchShowAction.do?method=doFindTypeJ&category=6";
+
+    var dataset = [];
+    var filteredDataset = [];
+    var currentPage = 1;
+    var pageSize = 10;
+
+    var input = document.getElementById("input");
+    var prevBtn = document.getElementById("prevBtn");
+    var nextBtn = document.getElementById("nextBtn");
+    var pageNum = document.getElementById("page_num");
+
+    // 建立 XMLHttpRequest 並送出請求。
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", openUrl, true);
+    xhr.send();
+
+    // API 回傳成功後，先保存資料，再依目前條件渲染第一頁。
+    xhr.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        dataset = JSON.parse(this.responseText);
+        filteredDataset = dataset;
+        renderCurrentPage();
+      }
+    };
+
+    // 將傳入的資料逐筆加入表格，延續原本 insertRow / insertCell 的寫法。
+    function addNewData(dataset) {
+      let myTable = document.getElementById("csie");
+
+      dataset.forEach(function (data) {
+        let row = myTable.insertRow(-1);
+        let showInfo = (data["showInfo"] && data["showInfo"][0]) || {};
+        row.insertCell(0).innerHTML = data["title"] || "";
+        row.insertCell(1).innerHTML = showInfo["location"] || "";
+        row.insertCell(2).innerHTML = showInfo["price"] || "";
+      });
+    }
+
+    // 清空舊資料列，只保留表頭，方便重新渲染搜尋或翻頁後的結果。
+    function delOldData() {
+      let myTable = document.getElementById("csie");
+
+      while (myTable.rows.length > 1) {
+        myTable.deleteRow(myTable.rows.length - 1);
+      }
+    }
+
+    function renderCurrentPage() {
+      let totalPages = Math.max(1, Math.ceil(filteredDataset.length / pageSize));
+      let startIndex = (currentPage - 1) * pageSize;
+      let endIndex = startIndex + pageSize;
+      let pageData = filteredDataset.slice(startIndex, endIndex);
+
+      delOldData();
+      addNewData(pageData);
+      updatePagination(totalPages);
+    }
+
+    function updatePagination(totalPages) {
+      pageNum.textContent = currentPage + " / " + totalPages;
+      prevBtn.disabled = currentPage === 1;
+      nextBtn.disabled = currentPage === totalPages || filteredDataset.length === 0;
+    }
+
+    function handleSearch() {
+      let keyword = input.value.trim().toLowerCase();
+
+      filteredDataset = dataset.filter(function (data) {
+        let title = (data["title"] || "").toLowerCase();
+
+        return title.includes(keyword);
+      });
+
+      currentPage = 1;
+      renderCurrentPage();
+    }
+
+    input.addEventListener("input", handleSearch);
+
+    prevBtn.addEventListener("click", function () {
+      if (currentPage > 1) {
+        currentPage--;
+        renderCurrentPage();
+      }
+    });
+
+    nextBtn.addEventListener("click", function () {
+      let totalPages = Math.max(1, Math.ceil(filteredDataset.length / pageSize));
+
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderCurrentPage();
+      }
+    });
+  </script>
+</html>
