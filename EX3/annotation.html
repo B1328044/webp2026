@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table{/*針對整個表格樣式*/
+    font-family: Arial, Helvetica, sans-serif;
+    /*這是選字體，Arial優先，再來是Helvetica，最後是sans-serif*/
+    border-collapse: collapse;
+    /*合併表格邊框，變成單一乾淨的線*/
+    width: 100%;
+    /*表格會撐滿整個頁面寬度（滿版）*/
+}
+
+td, th{/*td是資料格，th是標題格*/
+    border: 1px solid #ddd;/*線粗細，實線，淺灰色*/
+    padding: 6px;/*內距（內容和邊框的距離）*/
+}
+tr:nth-child(even){background-color: #f2f2f2;}/*偶數列上色，背景顏色設定淺灰*/
+tr:hover {background-color: #ddd;}/*滑鼠移上去時觸發。例如移到某列，該列會變灰色*/
+
+th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;/*文字靠左對齊*/
+    background-color: #04AA6D;/*標題背景綠色*/
+    color: white;/*文字設定為白色（綠底白字）*/
+}
+</style>
+</head>
+
+<body>
+
+<h2>課程列表</h2>
+
+<table>
+    <tr>
+        <th>開課單位</th>
+        <th>課程名稱</th>
+        <th>授課教師</th>
+    </tr>
+
+    <tr>
+        <td>資工系</td>
+        <td>物件導向軟體設計</td>
+        <td>黃崇源</td>
+    </tr>
+
+    <tr>
+        <td>資工系</td>
+        <td>計算機網路實驗</td>
+        <td>李春良</td>
+    </tr>
+
+    <tr>
+        <td>資工系</td>
+        <td>作業系統實務</td>
+        <td>張哲維</td>
+    </tr>
+
+    <tr>
+        <td>資工系</td>
+        <td>生物統計</td>
+        <td>陳光武</td>
+    </tr>
+
+    <tr>
+        <td>資工系</td>
+        <td>通訊系統</td>
+        <td>陳仁暉</td>
+    </tr>
+
+    <tr>
+        <td>資工系</td>
+        <td>硬軟體專題(2)</td>
+        <td>魏志達</td>
+    </tr>
+</table>
+
+</body>
+</html>
